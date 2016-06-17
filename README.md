@@ -1,0 +1,1 @@
+## OpenstreetMap obj info
