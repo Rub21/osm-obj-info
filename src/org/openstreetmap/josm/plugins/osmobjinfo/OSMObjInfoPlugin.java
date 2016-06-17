@@ -5,6 +5,10 @@ import org.openstreetmap.josm.gui.MapFrame;
 import org.openstreetmap.josm.plugins.Plugin;
 import org.openstreetmap.josm.plugins.PluginInformation;
 
+/**
+ *
+ * @author ruben
+ */
 public class OSMObjInfoPlugin extends Plugin {
 
     protected static OSMObjInfotDialog objInfotDialog;

@@ -1,12 +1,16 @@
 package org.openstreetmap.josm.plugins.osmobjinfo;
 
+import java.awt.Color;
 import static org.openstreetmap.josm.tools.I18n.tr;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.Collection;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import org.openstreetmap.josm.data.SelectionChangedListener;
@@ -17,12 +21,20 @@ import org.openstreetmap.josm.gui.dialogs.ToggleDialog;
 import org.openstreetmap.josm.gui.util.GuiHelper;
 import org.openstreetmap.josm.tools.Shortcut;
 
+/**
+ *
+ * @author ruben
+ */
 public class OSMObjInfotDialog extends ToggleDialog implements SelectionChangedListener {
 
     protected JLabel lbUser;
     protected JLabel lbVersion;
     protected JLabel lbTimestamp;
     protected JLabel lbIdChangeset;
+    protected JButton jbUser;
+    protected JButton jbVersion;
+    protected JButton jbTimestamp;
+    protected JButton jbIdChangeset;
 
     public OSMObjInfotDialog() {
         super(tr("OpenStreetMap obj info"),
@@ -35,6 +47,14 @@ public class OSMObjInfotDialog extends ToggleDialog implements SelectionChangedL
         valuePanel.add(new JLabel(tr("User")));
         lbUser = new JLabel();
         valuePanel.add(lbUser);
+        lbUser.setForeground(new Color(89, 139, 214));
+        lbUser.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lbUser.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                OSMObjInfoFunctions.selectbyUser(lbUser.getText().toString());
+            }
+        });
 
         valuePanel.add(new JLabel(tr("Version")));
         lbVersion = new JLabel();
@@ -82,4 +102,5 @@ public class OSMObjInfotDialog extends ToggleDialog implements SelectionChangedL
             }
         });
     }
+
 }
