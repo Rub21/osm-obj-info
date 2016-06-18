@@ -52,6 +52,7 @@ public class OSMObjInfotDialog extends ToggleDialog implements SelectionChangedL
                 Shortcut.registerShortcut("osmObjInfo", tr("Toggle: {0}", tr("OpenStreetMap obj info")), KeyEvent.VK_I, Shortcut.ALT_CTRL_SHIFT), 70);
 
         JPanel valuePanel = new JPanel(new GridLayout(0, 2));
+        valuePanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         //User
         valuePanel.add(new JLabel(tr("User")));
