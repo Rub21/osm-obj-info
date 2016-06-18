@@ -17,11 +17,27 @@ import org.openstreetmap.josm.gui.layer.OsmDataLayer;
  * @author ruben
  */
 public class OSMObjInfoFunctions {
-    public static void selectbyUser(String user) {
+
+    public static void selectbyUser( final String user) {
+        OsmDataLayer layer = Main.main.getEditLayer();
+        Set<OsmPrimitive> omsobj_list = new HashSet<>();
+        
+        
+        for (OsmPrimitive obj : layer.data.allPrimitives()) {
+//            System.out.printl(obj.getUser().getName());
+            if (obj.getUser().getName().equals(user)) {
+                omsobj_list.add(obj);
+            }
+        }
+        layer.data.setSelected(omsobj_list);
+        AutoScaleAction.zoomToSelection();
+    }
+
+    public static void selectbyChangesetId(int changesetId) {
         OsmDataLayer layer = Main.main.getEditLayer();
         Set<OsmPrimitive> omsobj_list = new HashSet<>();
         for (OsmPrimitive obj : layer.data.allPrimitives()) {
-            if (obj.getUser().getName().equals(user)) {
+            if (obj.getChangesetId() == changesetId) {
                 omsobj_list.add(obj);
             }
         }
