@@ -18,15 +18,16 @@ import org.openstreetmap.josm.gui.layer.OsmDataLayer;
  */
 public class OSMObjInfoFunctions {
 
-    public static void selectbyUser( final String user) {
+    public static void selectbyUser(final String user) {
         OsmDataLayer layer = Main.main.getEditLayer();
         Set<OsmPrimitive> omsobj_list = new HashSet<>();
-        
-        
         for (OsmPrimitive obj : layer.data.allPrimitives()) {
-//            System.out.printl(obj.getUser().getName());
-            if (obj.getUser().getName().equals(user)) {
-                omsobj_list.add(obj);
+            try {
+                if (obj.getUser().getName().equals(user)) {
+                    omsobj_list.add(obj);
+                }
+            } catch (NullPointerException e) {
+                System.out.print(e);
             }
         }
         layer.data.setSelected(omsobj_list);
@@ -37,8 +38,12 @@ public class OSMObjInfoFunctions {
         OsmDataLayer layer = Main.main.getEditLayer();
         Set<OsmPrimitive> omsobj_list = new HashSet<>();
         for (OsmPrimitive obj : layer.data.allPrimitives()) {
-            if (obj.getChangesetId() == changesetId) {
-                omsobj_list.add(obj);
+            try {
+                if (obj.getChangesetId() == changesetId) {
+                    omsobj_list.add(obj);
+                }
+            } catch (NullPointerException e) {
+                System.out.print(e);
             }
         }
         layer.data.setSelected(omsobj_list);
