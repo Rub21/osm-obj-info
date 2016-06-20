@@ -13,11 +13,8 @@ import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Date;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import org.openstreetmap.josm.actions.AutoScaleAction;
 import org.openstreetmap.josm.data.SelectionChangedListener;
 import org.openstreetmap.josm.data.osm.DataSet;
 import org.openstreetmap.josm.data.osm.OsmPrimitive;
@@ -42,7 +39,6 @@ public class OSMObjInfotDialog extends ToggleDialog implements SelectionChangedL
     protected JLabel lnLinkUser;
     protected JLabel lbLinnkIdobj;
     protected JLabel jbLinkIdChangeset;
-
     String typeObj = "way";
 
     public OSMObjInfotDialog() {
@@ -132,9 +128,6 @@ public class OSMObjInfotDialog extends ToggleDialog implements SelectionChangedL
         jpIdchange.add(lbIdChangeset, BorderLayout.LINE_START);
         jpIdchange.add(jbLinkIdChangeset, BorderLayout.LINE_END);
         valuePanel.add(jpIdchange);
-
-        this.setPreferredSize(new Dimension(0, 50));
-
         createLayout(valuePanel, false, Arrays.asList(new SideButton[]{}));
         DataSet.addSelectionListener(this);
     }
@@ -146,13 +139,20 @@ public class OSMObjInfotDialog extends ToggleDialog implements SelectionChangedL
         String idObject = "";
         String timestamp = "";
         String idchangeset = "";
+
         for (OsmPrimitive element : selection) {
-            typeObj = element.getType().toString();
-            user = element.getUser().getName();
-            idObject = String.valueOf(element.getId());
-            version = element.getVersion() + "";
-            timestamp = new SimpleDateFormat("yyyy/MM/dd hh:mm a").format(element.getTimestamp().getTime());
-            idchangeset = String.valueOf(element.getChangesetId());
+            if (!element.isNew()) {
+                typeObj = element.getType().toString();
+                try {
+                    user = element.getUser().getName();
+                    timestamp = new SimpleDateFormat("yyyy/MM/dd hh:mm a").format(element.getTimestamp().getTime());
+                } catch (NullPointerException e) {
+                    System.out.print(e);
+                }
+                idObject = String.valueOf(element.getId());
+                version = String.valueOf(element.getVersion());
+                idchangeset = String.valueOf(element.getChangesetId());
+            }
         }
 
         final String txtUser = user;
