@@ -38,7 +38,6 @@ public class OSMObjInfoFunctions {
                     omsobj_list.add(obj);
                 }
             } catch (NullPointerException e) {
-                System.out.print(e);
             }
         }
         layer.data.setSelected(omsobj_list);

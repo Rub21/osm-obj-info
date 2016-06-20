@@ -146,7 +146,6 @@ public class OSMObjInfotDialog extends ToggleDialog implements SelectionChangedL
                     user = element.getUser().getName();
                     timestamp = new SimpleDateFormat("yyyy/MM/dd hh:mm a").format(element.getTimestamp().getTime());
                 } catch (NullPointerException e) {
-                    System.out.print(e);
                     user = JosmUserIdentityManager.getInstance().getUserName();
                 }
                 idObject = String.valueOf(element.getId());
