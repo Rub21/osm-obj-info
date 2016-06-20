@@ -4,8 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import static org.openstreetmap.josm.tools.I18n.tr;
-
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -18,6 +16,7 @@ import javax.swing.JPanel;
 import org.openstreetmap.josm.data.SelectionChangedListener;
 import org.openstreetmap.josm.data.osm.DataSet;
 import org.openstreetmap.josm.data.osm.OsmPrimitive;
+import org.openstreetmap.josm.gui.JosmUserIdentityManager;
 import org.openstreetmap.josm.gui.SideButton;
 import org.openstreetmap.josm.gui.dialogs.ToggleDialog;
 import org.openstreetmap.josm.gui.util.GuiHelper;
@@ -45,7 +44,7 @@ public class OSMObjInfotDialog extends ToggleDialog implements SelectionChangedL
         super(tr("OpenStreetMap obj info"),
                 "iconosmobjid",
                 tr("Open OpenStreetMap obj info window"),
-                Shortcut.registerShortcut("osmObjInfo", tr("Toggle: {0}", tr("OpenStreetMap obj info")), KeyEvent.VK_I, Shortcut.ALT_CTRL_SHIFT), 70);
+                Shortcut.registerShortcut("osmObjInfo", tr("Toggle: {0}", tr("OpenStreetMap obj info")), KeyEvent.VK_I, Shortcut.ALT_CTRL_SHIFT), 50);
 
         JPanel valuePanel = new JPanel(new GridLayout(0, 2));
         valuePanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -60,7 +59,7 @@ public class OSMObjInfotDialog extends ToggleDialog implements SelectionChangedL
         lbUser.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                OSMObjInfoFunctions.selectbyUser(lbUser.getText().toString());
+                OSMObjInfoFunctions.selectbyUser(lbUser.getText());
             }
         });
         lnLinkUser.addMouseListener(new MouseAdapter() {
@@ -103,14 +102,14 @@ public class OSMObjInfotDialog extends ToggleDialog implements SelectionChangedL
         valuePanel.add(lbTimestamp);
 
         //Changeset
-        valuePanel.add(new JLabel(tr("ChangeSet")));
+        valuePanel.add(new JLabel(tr("Changeset")));
         lbIdChangeset = new JLabel();
         lbIdChangeset.setForeground(Color.BLUE);
         lbIdChangeset.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lbIdChangeset.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                int idchangeset = Integer.parseInt(lbIdChangeset.getText().toString());
+                int idchangeset = Integer.parseInt(lbIdChangeset.getText());
                 OSMObjInfoFunctions.selectbyChangesetId(idchangeset);
             }
         });
@@ -148,6 +147,7 @@ public class OSMObjInfotDialog extends ToggleDialog implements SelectionChangedL
                     timestamp = new SimpleDateFormat("yyyy/MM/dd hh:mm a").format(element.getTimestamp().getTime());
                 } catch (NullPointerException e) {
                     System.out.print(e);
+                    user = JosmUserIdentityManager.getInstance().getUserName();
                 }
                 idObject = String.valueOf(element.getId());
                 version = String.valueOf(element.getVersion());
