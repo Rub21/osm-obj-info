@@ -11,11 +11,15 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 import org.openstreetmap.josm.data.SelectionChangedListener;
 import org.openstreetmap.josm.data.osm.DataSet;
 import org.openstreetmap.josm.data.osm.OsmPrimitive;
@@ -32,7 +36,8 @@ import org.openstreetmap.josm.tools.Shortcut;
  * @author ruben
  */
 public class OSMObjInfotDialog extends ToggleDialog implements SelectionChangedListener {
-
+    
+    JTabbedPane jTabbedPane = new JTabbedPane();
     protected JLabel lbUser;
     protected JLabel lbVersion;
     protected JLabel lbIdobj;
@@ -45,17 +50,22 @@ public class OSMObjInfotDialog extends ToggleDialog implements SelectionChangedL
     protected JLabel lbCopyIdobj;
     protected JLabel lbCopyIdChangeset;
 
+    //More Detail
+    protected JLabel lbtypeMaper;
+    
     String typeObj = "way";
-
+    
     public OSMObjInfotDialog() {
         super(tr("OpenStreetMap obj info"),
                 "iconosmobjid",
                 tr("Open OpenStreetMap obj info window"),
                 Shortcut.registerShortcut("osmObjInfo", tr("Toggle: {0}", tr("OpenStreetMap obj info")), KeyEvent.VK_I, Shortcut.ALT_CTRL_SHIFT), 50);
-
+        
         JPanel valuePanel = new JPanel(new GridLayout(0, 2));
         valuePanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
+        
+        JPanel moreDetailPanel = new JPanel(new GridLayout(0, 2));
+        moreDetailPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         //User
         valuePanel.add(new JLabel(tr("User")));
         lbUser = new JLabel();
@@ -106,7 +116,7 @@ public class OSMObjInfotDialog extends ToggleDialog implements SelectionChangedL
                 OSMObjInfoFunctions.selectbyChangesetId(idchangeset);
             }
         });
-
+        
         lbLinkIdChangeset = new JLabel(ImageProvider.get("dialogs", "link.png"));
         lbCopyIdChangeset = new JLabel(ImageProvider.get("dialogs", "copy.png"));
         lbLinkIdChangeset.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -126,7 +136,7 @@ public class OSMObjInfotDialog extends ToggleDialog implements SelectionChangedL
                 clipboard.setContents(selection, selection);
             }
         });
-
+        
         JPanel jpIdchange = new JPanel(new BorderLayout());
         jpIdchange.add(lbIdChangeset, BorderLayout.LINE_START);
         JPanel jpch = new JPanel(new BorderLayout(5, 5));
@@ -172,12 +182,22 @@ public class OSMObjInfotDialog extends ToggleDialog implements SelectionChangedL
         valuePanel.add(new JLabel(tr("Date")));
         lbTimestamp = new JLabel();
         valuePanel.add(lbTimestamp);
-        createLayout(valuePanel, false, Arrays.asList(new SideButton[]{}));
+        
+        jTabbedPane.addTab("Home", valuePanel);
+
+        //MORE DETAIL
+        lbtypeMaper = new JLabel();
+        
+        moreDetailPanel.add(lbtypeMaper);
+        jTabbedPane.addTab("More Detail", moreDetailPanel);
+        
+        createLayout(jTabbedPane, false, Arrays.asList(new SideButton[]{}));
         DataSet.addSelectionListener(this);
     }
-
+    
     @Override
     public void selectionChanged(Collection<? extends OsmPrimitive> selection) {
+        
         if (selection.size() < 2) {
             String user = "";
             String version = "";
@@ -198,16 +218,30 @@ public class OSMObjInfotDialog extends ToggleDialog implements SelectionChangedL
                     idchangeset = String.valueOf(element.getChangesetId());
                 }
             }
-
+            
+            boolean mdetail = false;
+            if (jTabbedPane.getSelectedIndex() == 1) {
+                mdetail = true;
+            }
+            final boolean moredetail = mdetail;
             final String txtUser = user;
             final String txtVersion = version;
             final String txtIdobject = idObject;
             final String txtTimestamp = timestamp;
             final String txtIdChangeset = idchangeset;
-
+            
             GuiHelper.runInEDT(new Runnable() {
                 @Override
                 public void run() {
+                    if (moredetail) {
+                        try {
+                            
+//                            System.out.println(Util.getNumChangeset(txtUser));
+                            lbtypeMaper.setText(Util.typeofMaper(Util.getNumChangeset(txtUser)));
+                        } catch (IOException ex) {
+                            Logger.getLogger(OSMObjInfotDialog.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
                     lbUser.setText(txtUser);
                     lbIdChangeset.setText(txtIdChangeset);
                     lbIdobj.setText(txtIdobject);
