@@ -56,7 +56,7 @@ public class OSMObjInfotDialog extends ToggleDialog implements SelectionChangedL
         JPanel valuePanel = new JPanel(new GridLayout(0, 2));
         valuePanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        //User
+        //OSM USER
         valuePanel.add(new JLabel(tr("User")));
         lbUser = new JLabel();
         lbLinkUser = new JLabel(ImageProvider.get("dialogs", "link.png"));
@@ -65,27 +65,6 @@ public class OSMObjInfotDialog extends ToggleDialog implements SelectionChangedL
         lbLinkUser.setCursor(new Cursor(Cursor.HAND_CURSOR));
         lbCopyUser.setCursor(new Cursor(Cursor.HAND_CURSOR));
         lbUser.setForeground(Color.BLUE);
-        lbUser.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                OSMObjInfoFunctions.selectbyUser(lbUser.getText());
-            }
-        });
-        lbLinkUser.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                OpenBrowser.displayUrl("http://www.openstreetmap.org/user/" + lbUser.getText());
-            }
-        });
-        lbCopyUser.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                String linkUser = "http://www.openstreetmap.org/user/" + lbUser.getText();
-                StringSelection selection = new StringSelection(linkUser);
-                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-                clipboard.setContents(selection, selection);
-            }
-        });
         JPanel jpuser = new JPanel(new BorderLayout());
         jpuser.add(lbUser, BorderLayout.LINE_START);
         JPanel jpu = new JPanel(new BorderLayout(5, 5));
@@ -94,39 +73,37 @@ public class OSMObjInfotDialog extends ToggleDialog implements SelectionChangedL
         jpuser.add(jpu, BorderLayout.LINE_END);
         valuePanel.add(jpuser);
 
-        //Changeset
+        //User Actions
+        lbUser.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                OSMObjInfoFunctions.selectbyUser(lbUser.getText());
+            }
+        });
+
+        lbLinkUser.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                OSMObjInfoActions.openinBrowserUser(lbUser.getText());
+            }
+        });
+
+        lbCopyUser.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                OSMObjInfoActions.copyUser(lbUser.getText());
+            }
+        });
+
+        //CHANGESET
         valuePanel.add(new JLabel(tr("Changeset")));
         lbIdChangeset = new JLabel();
         lbIdChangeset.setForeground(Color.BLUE);
         lbIdChangeset.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        lbIdChangeset.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                int idchangeset = Integer.parseInt(lbIdChangeset.getText());
-                OSMObjInfoFunctions.selectbyChangesetId(idchangeset);
-            }
-        });
-
         lbLinkIdChangeset = new JLabel(ImageProvider.get("dialogs", "link.png"));
         lbCopyIdChangeset = new JLabel(ImageProvider.get("dialogs", "copy.png"));
         lbLinkIdChangeset.setCursor(new Cursor(Cursor.HAND_CURSOR));
         lbCopyIdChangeset.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        lbLinkIdChangeset.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                OpenBrowser.displayUrl("https://www.openstreetmap.org/changeset/" + lbIdChangeset.getText());
-            }
-        });
-        lbCopyIdChangeset.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                String linkchangeset = "https://www.openstreetmap.org/changeset/" + lbIdChangeset.getText();
-                StringSelection selection = new StringSelection(linkchangeset);
-                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-                clipboard.setContents(selection, selection);
-            }
-        });
-
         JPanel jpIdchange = new JPanel(new BorderLayout());
         jpIdchange.add(lbIdChangeset, BorderLayout.LINE_START);
         JPanel jpch = new JPanel(new BorderLayout(5, 5));
@@ -134,29 +111,34 @@ public class OSMObjInfotDialog extends ToggleDialog implements SelectionChangedL
         jpch.add(lbLinkIdChangeset, BorderLayout.LINE_END);
         jpIdchange.add(jpch, BorderLayout.LINE_END);
         valuePanel.add(jpIdchange);
+        //Changeset actions
+        lbIdChangeset.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int idchangeset = Integer.parseInt(lbIdChangeset.getText());
+                OSMObjInfoFunctions.selectbyChangesetId(idchangeset);
+            }
+        });
+        lbLinkIdChangeset.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                OSMObjInfoActions.openinBrowserChangeset(lbIdChangeset.getText());
+            }
+        });
+        lbCopyIdChangeset.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                OSMObjInfoActions.copyChangeset(lbIdChangeset.getText());
+            }
+        });
 
-        //obj id
+        //OBJ ID 
         valuePanel.add(new JLabel(tr("Object Id")));
         lbIdobj = new JLabel();
         lbLinnkIdobj = new JLabel(ImageProvider.get("dialogs", "link.png"));
         lbCopyIdobj = new JLabel(ImageProvider.get("dialogs", "copy.png"));
         lbLinnkIdobj.setCursor(new Cursor(Cursor.HAND_CURSOR));
         lbCopyIdobj.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        lbLinnkIdobj.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                OpenBrowser.displayUrl("https://www.openstreetmap.org/" + typeObj + "/" + lbIdobj.getText());
-            }
-        });
-        lbCopyIdobj.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                String linkobjid = "https://www.openstreetmap.org/" + typeObj + "/" + lbIdobj.getText();
-                StringSelection selection = new StringSelection(linkobjid);
-                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-                clipboard.setContents(selection, selection);
-            }
-        });
         JPanel jpIdobj = new JPanel(new BorderLayout());
         jpIdobj.add(lbIdobj, BorderLayout.LINE_START);
         JPanel jpob = new JPanel(new BorderLayout(5, 5));
@@ -164,8 +146,21 @@ public class OSMObjInfotDialog extends ToggleDialog implements SelectionChangedL
         jpob.add(lbLinnkIdobj, BorderLayout.LINE_END);
         jpIdobj.add(jpob, BorderLayout.LINE_END);
         valuePanel.add(jpIdobj);
+        //id obj actions 
+        lbLinnkIdobj.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                OSMObjInfoActions.openinBrowserIdobj(typeObj, lbIdobj.getText());
+            }
+        });
+        lbCopyIdobj.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                OSMObjInfoActions.copyIdobj(typeObj, lbIdobj.getText());
+            }
+        });
 
-        //version
+        //VERSION
         valuePanel.add(new JLabel(tr("Version")));
         lbVersion = new JLabel();
         valuePanel.add(lbVersion);
