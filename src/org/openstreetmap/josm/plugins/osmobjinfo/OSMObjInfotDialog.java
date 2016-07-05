@@ -48,6 +48,7 @@ public class OSMObjInfotDialog extends ToggleDialog implements SelectionChangedL
 
     protected JLabel lbNeisUser;
     protected JLabel lbChangesetMap;
+    protected JLabel lbOsmDeepHistory;
 
     String typeObj = "way";
 
@@ -244,14 +245,16 @@ public class OSMObjInfotDialog extends ToggleDialog implements SelectionChangedL
         lbIdobj = new JLabel();
         lbLinnkIdobj = new JLabel(ImageProvider.get("dialogs", "link.png"));
         lbCopyIdobj = new JLabel(ImageProvider.get("dialogs", "copy.png"));
+        lbOsmDeepHistory = new JLabel(ImageProvider.get("dialogs", "copy.png"));
 
         lbLinnkIdobj.setCursor(new Cursor(Cursor.HAND_CURSOR));
         lbCopyIdobj.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        lbOsmDeepHistory.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-        JPanel jpIdobjOptions = new JPanel(new BorderLayout(5, 5));
-        jpIdobjOptions.add(lbCopyIdobj, BorderLayout.LINE_START);
-        jpIdobjOptions.add(lbLinnkIdobj, BorderLayout.LINE_END);
-
+        JPanel jpIdobjOptions = new JPanel(new GridLayout(1, 3, 5, 5));
+        jpIdobjOptions.add(lbCopyIdobj);
+        jpIdobjOptions.add(lbOsmDeepHistory);
+        jpIdobjOptions.add(lbLinnkIdobj);
         //add
         jpIdobj.add(lbIdobj, BorderLayout.LINE_START);
         jpIdobj.add(jpIdobjOptions, BorderLayout.LINE_END);
@@ -267,6 +270,13 @@ public class OSMObjInfotDialog extends ToggleDialog implements SelectionChangedL
             @Override
             public void mouseClicked(MouseEvent e) {
                 OSMObjInfoActions.copyIdobj(typeObj, lbIdobj.getText());
+            }
+        });
+        
+        lbOsmDeepHistory.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                OSMObjInfoActions.openinBrowserIdobjOsmDeepHistory(typeObj, lbIdobj.getText());
             }
         });
         return jpIdobj;

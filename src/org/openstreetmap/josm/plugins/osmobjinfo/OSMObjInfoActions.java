@@ -57,4 +57,8 @@ public class OSMObjInfoActions {
         OpenBrowser.displayUrl("https://www.openstreetmap.org/" + typeObj + "/" + idobj);
     }
 
+    public static void openinBrowserIdobjOsmDeepHistory(String typeObj, String idobj) {
+        OpenBrowser.displayUrl("http://osmlab.github.io/osm-deep-history/#/" + typeObj + "/" + idobj);
+
+    }
 }
