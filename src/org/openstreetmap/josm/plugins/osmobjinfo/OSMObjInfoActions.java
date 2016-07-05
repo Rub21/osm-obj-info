@@ -27,6 +27,10 @@ public class OSMObjInfoActions {
         OpenBrowser.displayUrl("http://www.openstreetmap.org/user/" + user);
     }
 
+    public static void openinBrowserUserNeis(String user) {
+        OpenBrowser.displayUrl("http://hdyc.neis-one.org/?" + user);
+    }
+
     public static void copyChangeset(String idChangeset) {
         String linkchangeset = "https://www.openstreetmap.org/changeset/" + idChangeset;
         StringSelection selection = new StringSelection(linkchangeset);
@@ -36,6 +40,10 @@ public class OSMObjInfoActions {
 
     public static void openinBrowserChangeset(String idChangeset) {
         OpenBrowser.displayUrl("https://www.openstreetmap.org/changeset/" + idChangeset);
+    }
+
+    public static void openinBrowserChangesetMap(String idChangeset) {
+        OpenBrowser.displayUrl("http://osmlab.github.io/changeset-map/#" + idChangeset);
     }
 
     public static void copyIdobj(String typeObj, String idobj) {
