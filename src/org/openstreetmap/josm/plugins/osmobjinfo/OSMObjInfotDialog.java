@@ -49,6 +49,7 @@ public class OSMObjInfotDialog extends ToggleDialog implements SelectionChangedL
     protected JLabel lbNeisUser;
     protected JLabel lbChangesetMap;
     protected JLabel lbOsmDeepHistory;
+    protected JLabel lbUserOsmComments;
 
     String typeObj = "way";
 
@@ -132,17 +133,20 @@ public class OSMObjInfotDialog extends ToggleDialog implements SelectionChangedL
         lbLinkUser = new JLabel(ImageProvider.get("dialogs", "link.png"));
         lbCopyUser = new JLabel(ImageProvider.get("dialogs", "copy.png"));
         lbNeisUser = new JLabel(ImageProvider.get("dialogs", "copy.png"));
+        lbUserOsmComments = new JLabel(ImageProvider.get("dialogs", "copy.png"));
 
         lbUser.setCursor(new Cursor(Cursor.HAND_CURSOR));
         lbLinkUser.setCursor(new Cursor(Cursor.HAND_CURSOR));
         lbCopyUser.setCursor(new Cursor(Cursor.HAND_CURSOR));
         lbNeisUser.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        lbUserOsmComments.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         lbUser.setForeground(Color.BLUE);
 
-        JPanel jpuseroptions = new JPanel(new GridLayout(1, 3, 5, 5));
+        JPanel jpuseroptions = new JPanel(new GridLayout(1, 4, 5, 5));
         jpuseroptions.add(lbCopyUser);
         jpuseroptions.add(lbNeisUser);
+        jpuseroptions.add(lbUserOsmComments);
         jpuseroptions.add(lbLinkUser);
 
         //add
@@ -177,6 +181,12 @@ public class OSMObjInfotDialog extends ToggleDialog implements SelectionChangedL
             }
         });
 
+        lbUserOsmComments.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                OSMObjInfoActions.openinBrowserUserOsmComments(lbUser.getText());
+            }
+        });
         return jpUser;
     }
 
@@ -272,7 +282,7 @@ public class OSMObjInfotDialog extends ToggleDialog implements SelectionChangedL
                 OSMObjInfoActions.copyIdobj(typeObj, lbIdobj.getText());
             }
         });
-        
+
         lbOsmDeepHistory.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {

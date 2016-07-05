@@ -31,6 +31,10 @@ public class OSMObjInfoActions {
         OpenBrowser.displayUrl("http://hdyc.neis-one.org/?" + user);
     }
 
+    static void openinBrowserUserOsmComments(String user) {
+        OpenBrowser.displayUrl("https://www.mapbox.com/osm-comments/#/changesets/?q=users:" + user);
+    }
+
     public static void copyChangeset(String idChangeset) {
         String linkchangeset = "https://www.openstreetmap.org/changeset/" + idChangeset;
         StringSelection selection = new StringSelection(linkchangeset);
@@ -61,4 +65,5 @@ public class OSMObjInfoActions {
         OpenBrowser.displayUrl("http://osmlab.github.io/osm-deep-history/#/" + typeObj + "/" + idobj);
 
     }
+
 }
