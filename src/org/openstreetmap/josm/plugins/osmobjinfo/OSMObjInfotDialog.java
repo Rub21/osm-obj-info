@@ -132,8 +132,8 @@ public class OSMObjInfotDialog extends ToggleDialog implements SelectionChangedL
         lbUser = new JLabel();
         lbLinkUser = new JLabel(ImageProvider.get("dialogs", "link.png"));
         lbCopyUser = new JLabel(ImageProvider.get("dialogs", "copy.png"));
-        lbNeisUser = new JLabel(ImageProvider.get("dialogs", "copy.png"));
-        lbUserOsmComments = new JLabel(ImageProvider.get("dialogs", "copy.png"));
+        lbNeisUser = new JLabel(ImageProvider.get("dialogs", "neisuser.png"));
+        lbUserOsmComments = new JLabel(ImageProvider.get("dialogs", "userosmcomments.png"));
 
         lbUser.setCursor(new Cursor(Cursor.HAND_CURSOR));
         lbLinkUser.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -198,7 +198,7 @@ public class OSMObjInfotDialog extends ToggleDialog implements SelectionChangedL
         lbIdChangeset = new JLabel();
         lbLinkIdChangeset = new JLabel(ImageProvider.get("dialogs", "link.png"));
         lbCopyIdChangeset = new JLabel(ImageProvider.get("dialogs", "copy.png"));
-        lbChangesetMap = new JLabel(ImageProvider.get("dialogs", "copy.png"));
+        lbChangesetMap = new JLabel(ImageProvider.get("dialogs", "changesetmap.png"));
 
         lbIdChangeset.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lbLinkIdChangeset.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -255,7 +255,7 @@ public class OSMObjInfotDialog extends ToggleDialog implements SelectionChangedL
         lbIdobj = new JLabel();
         lbLinnkIdobj = new JLabel(ImageProvider.get("dialogs", "link.png"));
         lbCopyIdobj = new JLabel(ImageProvider.get("dialogs", "copy.png"));
-        lbOsmDeepHistory = new JLabel(ImageProvider.get("dialogs", "copy.png"));
+        lbOsmDeepHistory = new JLabel(ImageProvider.get("dialogs", "deephistory.png"));
 
         lbLinnkIdobj.setCursor(new Cursor(Cursor.HAND_CURSOR));
         lbCopyIdobj.setCursor(new Cursor(Cursor.HAND_CURSOR));
