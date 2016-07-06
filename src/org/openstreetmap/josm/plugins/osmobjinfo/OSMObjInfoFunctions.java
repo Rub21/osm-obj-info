@@ -42,6 +42,4 @@ public class OSMObjInfoFunctions {
         layer.data.setSelected(omsobj_list);
         AutoScaleAction.zoomToSelection();
     }
-    
-    
 }

@@ -1,13 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.openstreetmap.josm.plugins.osmobjinfo;
 
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
+import javax.swing.JOptionPane;
+import org.openstreetmap.josm.gui.Notification;
+import static org.openstreetmap.josm.tools.I18n.tr;
 import org.openstreetmap.josm.tools.OpenBrowser;
 
 /**
@@ -21,18 +19,28 @@ public class OSMObjInfoActions {
         StringSelection selection = new StringSelection(linkUser);
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         clipboard.setContents(selection, selection);
+        new Notification(tr("Copy: " + linkUser)).setIcon(JOptionPane.INFORMATION_MESSAGE).setDuration(Notification.TIME_SHORT).show();
     }
 
     public static void openinBrowserUser(String user) {
-        OpenBrowser.displayUrl("http://www.openstreetmap.org/user/" + user);
+        String url = "http://www.openstreetmap.org/user/" + user;
+        new Notification(tr("Open in browser " + url)).setIcon(JOptionPane.INFORMATION_MESSAGE).setDuration(Notification.TIME_SHORT).show();
+        OpenBrowser.displayUrl(url);
+
     }
 
     public static void openinBrowserUserNeis(String user) {
-        OpenBrowser.displayUrl("http://hdyc.neis-one.org/?" + user);
+        String url = "http://hdyc.neis-one.org/?" + user;
+        new Notification(tr("Open in browser " + url)).setIcon(JOptionPane.INFORMATION_MESSAGE).setDuration(Notification.TIME_SHORT).show();
+        OpenBrowser.displayUrl(url);
+
     }
 
     static void openinBrowserUserOsmComments(String user) {
-        OpenBrowser.displayUrl("https://www.mapbox.com/osm-comments/#/changesets/?q=users:" + user);
+        String url = "https://www.mapbox.com/osm-comments/#/changesets/?q=users:" + user;
+        new Notification(tr("Open in browser " + url)).setIcon(JOptionPane.INFORMATION_MESSAGE).setDuration(Notification.TIME_SHORT).show();
+        OpenBrowser.displayUrl(url);
+
     }
 
     public static void copyChangeset(String idChangeset) {
@@ -40,14 +48,20 @@ public class OSMObjInfoActions {
         StringSelection selection = new StringSelection(linkchangeset);
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         clipboard.setContents(selection, selection);
+        new Notification(tr("Copy: " + linkchangeset)).setIcon(JOptionPane.INFORMATION_MESSAGE).setDuration(Notification.TIME_SHORT).show();
     }
 
     public static void openinBrowserChangeset(String idChangeset) {
-        OpenBrowser.displayUrl("https://www.openstreetmap.org/changeset/" + idChangeset);
+        String url = "https://www.openstreetmap.org/changeset/" + idChangeset;
+        new Notification(tr("Open in browser " + url)).setIcon(JOptionPane.INFORMATION_MESSAGE).setDuration(Notification.TIME_SHORT).show();
+        OpenBrowser.displayUrl(url);
     }
 
     public static void openinBrowserChangesetMap(String idChangeset) {
-        OpenBrowser.displayUrl("http://osmlab.github.io/changeset-map/#" + idChangeset);
+        String url = "http://osmlab.github.io/changeset-map/#" + idChangeset;
+        new Notification(tr("Open in browser " + url)).setIcon(JOptionPane.INFORMATION_MESSAGE).setDuration(Notification.TIME_SHORT).show();
+        OpenBrowser.displayUrl(url);
+
     }
 
     public static void copyIdobj(String typeObj, String idobj) {
@@ -55,14 +69,20 @@ public class OSMObjInfoActions {
         StringSelection selection = new StringSelection(linkobjid);
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         clipboard.setContents(selection, selection);
+        new Notification(tr("Copy: " + linkobjid)).setIcon(JOptionPane.INFORMATION_MESSAGE).setDuration(Notification.TIME_SHORT).show();
     }
 
     public static void openinBrowserIdobj(String typeObj, String idobj) {
-        OpenBrowser.displayUrl("https://www.openstreetmap.org/" + typeObj + "/" + idobj);
+        String url = "https://www.openstreetmap.org/" + typeObj + "/" + idobj;
+        new Notification(tr("Open in browser " + url)).setIcon(JOptionPane.INFORMATION_MESSAGE).setDuration(Notification.TIME_SHORT).show();
+        OpenBrowser.displayUrl(url);
+
     }
 
     public static void openinBrowserIdobjOsmDeepHistory(String typeObj, String idobj) {
-        OpenBrowser.displayUrl("http://osmlab.github.io/osm-deep-history/#/" + typeObj + "/" + idobj);
+        String url = "http://osmlab.github.io/osm-deep-history/#/" + typeObj + "/" + idobj;
+        new Notification(tr("Open in browser " + url)).setIcon(JOptionPane.INFORMATION_MESSAGE).setDuration(Notification.TIME_SHORT).show();
+        OpenBrowser.displayUrl(url);
 
     }
 

@@ -3,12 +3,8 @@ package org.openstreetmap.josm.plugins.osmobjinfo;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.GridBagLayout;
 import static org.openstreetmap.josm.tools.I18n.tr;
 import java.awt.GridLayout;
-import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -25,7 +21,6 @@ import org.openstreetmap.josm.gui.SideButton;
 import org.openstreetmap.josm.gui.dialogs.ToggleDialog;
 import org.openstreetmap.josm.gui.util.GuiHelper;
 import org.openstreetmap.josm.tools.ImageProvider;
-import org.openstreetmap.josm.tools.OpenBrowser;
 import org.openstreetmap.josm.tools.Shortcut;
 
 /**
@@ -57,7 +52,7 @@ public class OSMObjInfotDialog extends ToggleDialog implements SelectionChangedL
         super(tr("OpenStreetMap obj info"),
                 "iconosmobjid",
                 tr("Open OpenStreetMap obj info window"),
-                Shortcut.registerShortcut("osmObjInfo", tr("Toggle: {0}", tr("OpenStreetMap obj info")), KeyEvent.VK_I, Shortcut.ALT_CTRL_SHIFT), 50);
+                Shortcut.registerShortcut("osmObjInfo", tr("Toggle: {0}", tr("OpenStreetMap obj info")), KeyEvent.VK_I, Shortcut.ALT_CTRL_SHIFT), 90);
 
         JPanel panel = new JPanel(new GridLayout(0, 2));
         panel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
