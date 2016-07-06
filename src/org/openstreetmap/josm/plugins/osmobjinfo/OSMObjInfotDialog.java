@@ -5,9 +5,6 @@ import java.awt.Color;
 import java.awt.Cursor;
 import static org.openstreetmap.josm.tools.I18n.tr;
 import java.awt.GridLayout;
-import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -24,7 +21,6 @@ import org.openstreetmap.josm.gui.SideButton;
 import org.openstreetmap.josm.gui.dialogs.ToggleDialog;
 import org.openstreetmap.josm.gui.util.GuiHelper;
 import org.openstreetmap.josm.tools.ImageProvider;
-import org.openstreetmap.josm.tools.OpenBrowser;
 import org.openstreetmap.josm.tools.Shortcut;
 
 /**
@@ -45,134 +41,40 @@ public class OSMObjInfotDialog extends ToggleDialog implements SelectionChangedL
     protected JLabel lbCopyIdobj;
     protected JLabel lbCopyIdChangeset;
 
+    protected JLabel lbNeisUser;
+    protected JLabel lbChangesetMap;
+    protected JLabel lbOsmDeepHistory;
+    protected JLabel lbUserOsmComments;
+
     String typeObj = "way";
 
     public OSMObjInfotDialog() {
         super(tr("OpenStreetMap obj info"),
                 "iconosmobjid",
                 tr("Open OpenStreetMap obj info window"),
-                Shortcut.registerShortcut("osmObjInfo", tr("Toggle: {0}", tr("OpenStreetMap obj info")), KeyEvent.VK_I, Shortcut.ALT_CTRL_SHIFT), 50);
+                Shortcut.registerShortcut("osmObjInfo", tr("Toggle: {0}", tr("OpenStreetMap obj info")), KeyEvent.VK_I, Shortcut.ALT_CTRL_SHIFT), 90);
 
-        JPanel valuePanel = new JPanel(new GridLayout(0, 2));
-        valuePanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        //User
-        valuePanel.add(new JLabel(tr("User")));
-        lbUser = new JLabel();
-        lbLinkUser = new JLabel(ImageProvider.get("dialogs", "link.png"));
-        lbCopyUser = new JLabel(ImageProvider.get("dialogs", "copy.png"));
-        lbUser.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        lbLinkUser.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        lbCopyUser.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        lbUser.setForeground(Color.BLUE);
-        lbUser.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                OSMObjInfoFunctions.selectbyUser(lbUser.getText());
-            }
-        });
-        lbLinkUser.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                OpenBrowser.displayUrl("http://www.openstreetmap.org/user/" + lbUser.getText());
-            }
-        });
-        lbCopyUser.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                String linkUser = "http://www.openstreetmap.org/user/" + lbUser.getText();
-                StringSelection selection = new StringSelection(linkUser);
-                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-                clipboard.setContents(selection, selection);
-            }
-        });
-        JPanel jpuser = new JPanel(new BorderLayout());
-        jpuser.add(lbUser, BorderLayout.LINE_START);
-        JPanel jpu = new JPanel(new BorderLayout(5, 5));
-        jpu.add(lbCopyUser, BorderLayout.LINE_START);
-        jpu.add(lbLinkUser, BorderLayout.LINE_END);
-        jpuser.add(jpu, BorderLayout.LINE_END);
-        valuePanel.add(jpuser);
-
-        //Changeset
-        valuePanel.add(new JLabel(tr("Changeset")));
-        lbIdChangeset = new JLabel();
-        lbIdChangeset.setForeground(Color.BLUE);
-        lbIdChangeset.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        lbIdChangeset.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                int idchangeset = Integer.parseInt(lbIdChangeset.getText());
-                OSMObjInfoFunctions.selectbyChangesetId(idchangeset);
-            }
-        });
-
-        lbLinkIdChangeset = new JLabel(ImageProvider.get("dialogs", "link.png"));
-        lbCopyIdChangeset = new JLabel(ImageProvider.get("dialogs", "copy.png"));
-        lbLinkIdChangeset.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        lbCopyIdChangeset.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        lbLinkIdChangeset.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                OpenBrowser.displayUrl("https://www.openstreetmap.org/changeset/" + lbIdChangeset.getText());
-            }
-        });
-        lbCopyIdChangeset.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                String linkchangeset = "https://www.openstreetmap.org/changeset/" + lbIdChangeset.getText();
-                StringSelection selection = new StringSelection(linkchangeset);
-                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-                clipboard.setContents(selection, selection);
-            }
-        });
-
-        JPanel jpIdchange = new JPanel(new BorderLayout());
-        jpIdchange.add(lbIdChangeset, BorderLayout.LINE_START);
-        JPanel jpch = new JPanel(new BorderLayout(5, 5));
-        jpch.add(lbCopyIdChangeset, BorderLayout.LINE_START);
-        jpch.add(lbLinkIdChangeset, BorderLayout.LINE_END);
-        jpIdchange.add(jpch, BorderLayout.LINE_END);
-        valuePanel.add(jpIdchange);
-
+        JPanel panel = new JPanel(new GridLayout(0, 2));
+        panel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        //user
+        panel.add(new JLabel(tr("User")));
+        panel.add(buildUser());
+        //changeset
+        panel.add(new JLabel(tr("Changeset")));
+        panel.add(buildChangeset());
         //obj id
-        valuePanel.add(new JLabel(tr("Object Id")));
-        lbIdobj = new JLabel();
-        lbLinnkIdobj = new JLabel(ImageProvider.get("dialogs", "link.png"));
-        lbCopyIdobj = new JLabel(ImageProvider.get("dialogs", "copy.png"));
-        lbLinnkIdobj.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        lbCopyIdobj.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        lbLinnkIdobj.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                OpenBrowser.displayUrl("https://www.openstreetmap.org/" + typeObj + "/" + lbIdobj.getText());
-            }
-        });
-        lbCopyIdobj.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                String linkobjid = "https://www.openstreetmap.org/" + typeObj + "/" + lbIdobj.getText();
-                StringSelection selection = new StringSelection(linkobjid);
-                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-                clipboard.setContents(selection, selection);
-            }
-        });
-        JPanel jpIdobj = new JPanel(new BorderLayout());
-        jpIdobj.add(lbIdobj, BorderLayout.LINE_START);
-        JPanel jpob = new JPanel(new BorderLayout(5, 5));
-        jpob.add(lbCopyIdobj, BorderLayout.LINE_START);
-        jpob.add(lbLinnkIdobj, BorderLayout.LINE_END);
-        jpIdobj.add(jpob, BorderLayout.LINE_END);
-        valuePanel.add(jpIdobj);
-
+        panel.add(new JLabel(tr("Object Id")));
+        panel.add(buildidObject());
         //version
-        valuePanel.add(new JLabel(tr("Version")));
+        panel.add(new JLabel(tr("Version")));
         lbVersion = new JLabel();
-        valuePanel.add(lbVersion);
-        valuePanel.add(new JLabel(tr("Date")));
+        panel.add(lbVersion);
+        //date
+        panel.add(new JLabel(tr("Date")));
         lbTimestamp = new JLabel();
-        valuePanel.add(lbTimestamp);
-        createLayout(valuePanel, false, Arrays.asList(new SideButton[]{}));
+        panel.add(lbTimestamp);
+
+        createLayout(panel, false, Arrays.asList(new SideButton[]{}));
         DataSet.addSelectionListener(this);
     }
 
@@ -216,5 +118,172 @@ public class OSMObjInfotDialog extends ToggleDialog implements SelectionChangedL
                 }
             });
         }
+    }
+
+    private JPanel buildUser() {
+        //OSM USER
+        JPanel jpUser = new JPanel(new BorderLayout());
+
+        lbUser = new JLabel();
+        lbLinkUser = new JLabel(ImageProvider.get("dialogs", "link.png"));
+        lbCopyUser = new JLabel(ImageProvider.get("dialogs", "copy.png"));
+        lbNeisUser = new JLabel(ImageProvider.get("dialogs", "neisuser.png"));
+        lbUserOsmComments = new JLabel(ImageProvider.get("dialogs", "userosmcomments.png"));
+
+        lbUser.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        lbLinkUser.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        lbCopyUser.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        lbNeisUser.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        lbUserOsmComments.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        lbUser.setForeground(Color.BLUE);
+
+        JPanel jpuseroptions = new JPanel(new GridLayout(1, 4, 5, 5));
+        jpuseroptions.add(lbCopyUser);
+        jpuseroptions.add(lbNeisUser);
+        jpuseroptions.add(lbUserOsmComments);
+        jpuseroptions.add(lbLinkUser);
+
+        //add
+        jpUser.add(lbUser, BorderLayout.LINE_START);
+        jpUser.add(jpuseroptions, BorderLayout.LINE_END);
+        //User Actions
+        lbUser.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                OSMObjInfoFunctions.selectbyUser(lbUser.getText());
+            }
+        });
+
+        lbLinkUser.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                OSMObjInfoActions.openinBrowserUser(lbUser.getText());
+            }
+        });
+
+        lbCopyUser.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                OSMObjInfoActions.copyUser(lbUser.getText());
+            }
+        });
+
+        lbNeisUser.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                OSMObjInfoActions.openinBrowserUserNeis(lbUser.getText());
+            }
+        });
+
+        lbUserOsmComments.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                OSMObjInfoActions.openinBrowserUserOsmComments(lbUser.getText());
+            }
+        });
+        return jpUser;
+    }
+
+    private JPanel buildChangeset() {
+
+        //CHANGESET
+        JPanel jpChangeset = new JPanel(new BorderLayout());
+        //add
+        lbIdChangeset = new JLabel();
+        lbLinkIdChangeset = new JLabel(ImageProvider.get("dialogs", "link.png"));
+        lbCopyIdChangeset = new JLabel(ImageProvider.get("dialogs", "copy.png"));
+        lbChangesetMap = new JLabel(ImageProvider.get("dialogs", "changesetmap.png"));
+
+        lbIdChangeset.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lbLinkIdChangeset.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        lbCopyIdChangeset.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        lbChangesetMap.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        lbIdChangeset.setForeground(Color.BLUE);
+
+        JPanel jpchOptions = new JPanel(new GridLayout(1, 3, 5, 5));
+
+        jpchOptions.add(lbCopyIdChangeset);
+        jpchOptions.add(lbChangesetMap);
+        jpchOptions.add(lbLinkIdChangeset);
+
+        //add
+        jpChangeset.add(lbIdChangeset, BorderLayout.LINE_START);
+        jpChangeset.add(jpchOptions, BorderLayout.LINE_END);
+
+        //Changeset actions
+        lbIdChangeset.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int idchangeset = Integer.parseInt(lbIdChangeset.getText());
+                OSMObjInfoFunctions.selectbyChangesetId(idchangeset);
+            }
+        });
+        lbLinkIdChangeset.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                OSMObjInfoActions.openinBrowserChangeset(lbIdChangeset.getText());
+            }
+        });
+        lbCopyIdChangeset.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                OSMObjInfoActions.copyChangeset(lbIdChangeset.getText());
+            }
+        });
+        lbChangesetMap.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                OSMObjInfoActions.openinBrowserChangesetMap(lbIdChangeset.getText());
+            }
+        });
+
+        return jpChangeset;
+    }
+
+    private JPanel buildidObject() {
+
+        //OBJ ID 
+        JPanel jpIdobj = new JPanel(new BorderLayout());
+
+        lbIdobj = new JLabel();
+        lbLinnkIdobj = new JLabel(ImageProvider.get("dialogs", "link.png"));
+        lbCopyIdobj = new JLabel(ImageProvider.get("dialogs", "copy.png"));
+        lbOsmDeepHistory = new JLabel(ImageProvider.get("dialogs", "deephistory.png"));
+
+        lbLinnkIdobj.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        lbCopyIdobj.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        lbOsmDeepHistory.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        JPanel jpIdobjOptions = new JPanel(new GridLayout(1, 3, 5, 5));
+        jpIdobjOptions.add(lbCopyIdobj);
+        jpIdobjOptions.add(lbOsmDeepHistory);
+        jpIdobjOptions.add(lbLinnkIdobj);
+        //add
+        jpIdobj.add(lbIdobj, BorderLayout.LINE_START);
+        jpIdobj.add(jpIdobjOptions, BorderLayout.LINE_END);
+
+        //id obj actions 
+        lbLinnkIdobj.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                OSMObjInfoActions.openinBrowserIdobj(typeObj, lbIdobj.getText());
+            }
+        });
+        lbCopyIdobj.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                OSMObjInfoActions.copyIdobj(typeObj, lbIdobj.getText());
+            }
+        });
+
+        lbOsmDeepHistory.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                OSMObjInfoActions.openinBrowserIdobjOsmDeepHistory(typeObj, lbIdobj.getText());
+            }
+        });
+        return jpIdobj;
     }
 }

@@ -23,5 +23,4 @@ public class OSMObjInfoPlugin extends Plugin {
             newFrame.addToggleDialog(objInfotDialog = new OSMObjInfotDialog());
         }
     }
-
 }
