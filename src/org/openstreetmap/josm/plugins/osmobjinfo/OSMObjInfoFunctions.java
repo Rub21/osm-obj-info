@@ -14,7 +14,7 @@ import org.openstreetmap.josm.gui.layer.OsmDataLayer;
 public class OSMObjInfoFunctions {
 
     public static void selectbyUser(final String user) {
-        OsmDataLayer layer = Main.main.getEditLayer();
+        OsmDataLayer layer = Main.getLayerManager().getEditLayer();
         Set<OsmPrimitive> omsobj_list = new HashSet<>();
         for (OsmPrimitive obj : layer.data.allPrimitives()) {
             try {
@@ -29,7 +29,7 @@ public class OSMObjInfoFunctions {
     }
 
     public static void selectbyChangesetId(int changesetId) {
-        OsmDataLayer layer = Main.main.getEditLayer();
+        OsmDataLayer layer = Main.getLayerManager().getEditLayer();
         Set<OsmPrimitive> omsobj_list = new HashSet<>();
         for (OsmPrimitive obj : layer.data.allPrimitives()) {
             try {
