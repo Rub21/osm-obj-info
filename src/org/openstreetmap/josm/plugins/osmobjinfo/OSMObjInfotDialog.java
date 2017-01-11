@@ -8,17 +8,20 @@ import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collection;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.data.SelectionChangedListener;
 import org.openstreetmap.josm.data.osm.DataSet;
 import org.openstreetmap.josm.data.osm.OsmPrimitive;
 import org.openstreetmap.josm.gui.JosmUserIdentityManager;
 import org.openstreetmap.josm.gui.SideButton;
 import org.openstreetmap.josm.gui.dialogs.ToggleDialog;
+import org.openstreetmap.josm.gui.layer.NoteLayer;
 import org.openstreetmap.josm.gui.util.GuiHelper;
 import org.openstreetmap.josm.tools.ImageProvider;
 import org.openstreetmap.josm.tools.Shortcut;
@@ -27,7 +30,7 @@ import org.openstreetmap.josm.tools.Shortcut;
  *
  * @author ruben
  */
-public class OSMObjInfotDialog extends ToggleDialog implements SelectionChangedListener {
+public class OSMObjInfotDialog extends ToggleDialog {
 
     protected JLabel lbUser;
     protected JLabel lbVersion;
@@ -46,7 +49,12 @@ public class OSMObjInfotDialog extends ToggleDialog implements SelectionChangedL
     protected JLabel lbOsmDeepHistory;
     protected JLabel lbUserOsmComments;
 
-    String typeObj = "way";
+    String typeObj;
+    String user = "";
+    String version = "";
+    String idObject = "";
+    String timestamp = "";
+    String idchangeset = "";
 
     public OSMObjInfotDialog() {
         super(tr("OpenStreetMap obj info"),
@@ -75,49 +83,19 @@ public class OSMObjInfotDialog extends ToggleDialog implements SelectionChangedL
         panel.add(lbTimestamp);
 
         createLayout(panel, false, Arrays.asList(new SideButton[]{}));
-        DataSet.addSelectionListener(this);
-    }
-
-    @Override
-    public void selectionChanged(Collection<? extends OsmPrimitive> selection) {
-        if (selection.size() < 2) {
-            String user = "";
-            String version = "";
-            String idObject = "";
-            String timestamp = "";
-            String idchangeset = "";
-            for (OsmPrimitive element : selection) {
-                if (!element.isNew()) {
-                    typeObj = element.getType().toString();
-                    try {
-                        user = element.getUser().getName();
-                        timestamp = new SimpleDateFormat("yyyy/MM/dd hh:mm a").format(element.getTimestamp().getTime());
-                    } catch (NullPointerException e) {
-                        user = JosmUserIdentityManager.getInstance().getUserName();
-                    }
-                    idObject = String.valueOf(element.getId());
-                    version = String.valueOf(element.getVersion());
-                    idchangeset = String.valueOf(element.getChangesetId());
-                }
+        DataSet.addSelectionListener(new SelectionChangedListener() {
+            @Override
+            public void selectionChanged(Collection<? extends OsmPrimitive> clctn) {
+                selection(clctn);
             }
+        });
 
-            final String txtUser = user;
-            final String txtVersion = version;
-            final String txtIdobject = idObject;
-            final String txtTimestamp = timestamp;
-            final String txtIdChangeset = idchangeset;
-
-            GuiHelper.runInEDT(new Runnable() {
-                @Override
-                public void run() {
-                    lbUser.setText(txtUser);
-                    lbIdChangeset.setText(txtIdChangeset);
-                    lbIdobj.setText(txtIdobject);
-                    lbVersion.setText(txtVersion);
-                    lbTimestamp.setText(txtTimestamp);
-                }
-            });
-        }
+        Main.map.mapView.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                getInfoNotes(e);
+            }
+        });
     }
 
     private JPanel buildUser() {
@@ -285,5 +263,65 @@ public class OSMObjInfotDialog extends ToggleDialog implements SelectionChangedL
             }
         });
         return jpIdobj;
+    }
+
+    public void selection(Collection<? extends OsmPrimitive> selection) {
+        if (selection.size() < 2) {
+            user = "";
+            version = "";
+            idObject = "";
+            timestamp = "";
+            idchangeset = "";
+            for (OsmPrimitive element : selection) {
+                if (!element.isNew()) {
+                    typeObj = element.getType().toString();
+                    try {
+                        user = element.getUser().getName();
+                        timestamp = new SimpleDateFormat("yyyy/MM/dd hh:mm a").format(element.getTimestamp().getTime());
+                    } catch (NullPointerException e) {
+                        user = JosmUserIdentityManager.getInstance().getUserName();
+                    }
+                    idObject = String.valueOf(element.getId());
+                    version = String.valueOf(element.getVersion());
+                    idchangeset = String.valueOf(element.getChangesetId());
+                }
+            }
+
+            final String txtUser = user;
+            final String txtVersion = version;
+            final String txtIdobject = idObject;
+            final String txtTimestamp = timestamp;
+            final String txtIdChangeset = idchangeset;
+
+            GuiHelper.runInEDT(new Runnable() {
+                @Override
+                public void run() {
+                    lbUser.setText(txtUser);
+                    lbIdChangeset.setText(txtIdChangeset);
+                    lbIdobj.setText(txtIdobject);
+                    lbVersion.setText(txtVersion);
+                    lbTimestamp.setText(txtTimestamp);
+                }
+            });
+        }
+    }
+
+    public void getInfoNotes(MouseEvent e) {
+        if (!Main.getLayerManager().getLayersOfType(NoteLayer.class).isEmpty()) {
+            NoteLayer noteLayer = Main.getLayerManager().getLayersOfType(NoteLayer.class).get(0);
+            noteLayer.mouseClicked(e);
+            if (!noteLayer.getNoteData().getNotes().isEmpty() && noteLayer.getNoteData().getSelectedNote() != null) {
+                typeObj = "note";
+                lbUser.setText(noteLayer.getNoteData().getSelectedNote().getFirstComment().getUser().getName());
+                lbIdChangeset.setText("");
+                if (noteLayer.getNoteData().getSelectedNote().getId() < 0) {
+                    lbIdobj.setText("");
+                } else {
+                    lbIdobj.setText(Long.toString(noteLayer.getNoteData().getSelectedNote().getId()));
+                }
+                lbVersion.setText("");
+                lbTimestamp.setText(new SimpleDateFormat("yyyy/MM/dd hh:mm a").format(noteLayer.getNoteData().getSelectedNote().getCreatedAt()));
+            }
+        }
     }
 }
