@@ -69,7 +69,7 @@ public class OSMObjInfoActions {
 
     public static void openinBrowserChangesetMap(String idChangeset) {
         if (!idChangeset.isEmpty()) {
-            String url = "http://osmlab.github.io/changeset-map/#" + idChangeset;
+            String url = "https://osmcha.mapbox.com/" + idChangeset;
             new Notification(tr("Open in browser " + url)).setIcon(JOptionPane.INFORMATION_MESSAGE).setDuration(Notification.TIME_SHORT).show();
             OpenBrowser.displayUrl(url);
         }
