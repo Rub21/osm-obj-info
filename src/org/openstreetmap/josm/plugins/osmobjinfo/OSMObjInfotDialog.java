@@ -5,10 +5,12 @@ import java.awt.Color;
 import java.awt.Cursor;
 import static org.openstreetmap.josm.tools.I18n.tr;
 import java.awt.GridLayout;
+import java.awt.PopupMenu;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collection;
@@ -16,7 +18,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.data.SelectionChangedListener;
+import org.openstreetmap.josm.data.coor.EastNorth;
 import org.openstreetmap.josm.data.osm.DataSet;
+import org.openstreetmap.josm.data.osm.Node;
 import org.openstreetmap.josm.data.osm.OsmPrimitive;
 import org.openstreetmap.josm.gui.JosmUserIdentityManager;
 import org.openstreetmap.josm.gui.SideButton;
@@ -39,6 +43,8 @@ public class OSMObjInfotDialog extends ToggleDialog {
     protected JLabel lbIdChangeset;
     protected JLabel lbLinkUser;
     protected JLabel lbLinnkIdobj;
+    protected JLabel lbLinkMapillary;
+    protected JLabel lbLinkOSMcamp;
     protected JLabel lbLinkIdChangeset;
     protected JLabel lbCopyUser;
     protected JLabel lbCopyIdobj;
@@ -49,12 +55,16 @@ public class OSMObjInfotDialog extends ToggleDialog {
     protected JLabel lbOsmDeepHistory;
     protected JLabel lbUserOsmComments;
 
+    protected JLabel lbMapillary;
+    protected JLabel lbOsmcamp;
+
     String typeObj;
     String user = "";
     String version = "";
     String idObject = "";
     String timestamp = "";
     String idchangeset = "";
+    String coordinates = "";
 
     public OSMObjInfotDialog() {
         super(tr("OpenStreetMap obj info"),
@@ -81,6 +91,11 @@ public class OSMObjInfotDialog extends ToggleDialog {
         panel.add(new JLabel(tr("Date")));
         lbTimestamp = new JLabel();
         panel.add(lbTimestamp);
+
+        panel.add(new JLabel(tr("Images")));
+        lbMapillary = new JLabel();
+        lbOsmcamp = new JLabel();
+        panel.add(MapillaryImages());
 
         createLayout(panel, false, Arrays.asList(new SideButton[]{}));
         DataSet.addSelectionListener(new SelectionChangedListener() {
@@ -272,8 +287,11 @@ public class OSMObjInfotDialog extends ToggleDialog {
             idObject = "";
             timestamp = "";
             idchangeset = "";
+            coordinates = "";
+
             for (OsmPrimitive element : selection) {
                 if (!element.isNew()) {
+
                     typeObj = element.getType().toString();
                     try {
                         user = element.getUser().getName();
@@ -284,6 +302,10 @@ public class OSMObjInfotDialog extends ToggleDialog {
                     idObject = String.valueOf(element.getId());
                     version = String.valueOf(element.getVersion());
                     idchangeset = String.valueOf(element.getChangesetId());
+
+                    DecimalFormat df = new DecimalFormat("#.00000");
+                    coordinates = df.format(element.getBBox().getCenter().lat()) + "," + df.format(element.getBBox().getCenter().lon());
+
                 }
             }
 
@@ -301,6 +323,8 @@ public class OSMObjInfotDialog extends ToggleDialog {
                     lbIdobj.setText(txtIdobject);
                     lbVersion.setText(txtVersion);
                     lbTimestamp.setText(txtTimestamp);
+                    lbMapillary.setText(coordinates);
+
                 }
             });
         }
@@ -323,5 +347,34 @@ public class OSMObjInfotDialog extends ToggleDialog {
                 lbTimestamp.setText(new SimpleDateFormat("yyyy/MM/dd hh:mm a").format(noteLayer.getNoteData().getSelectedNote().getCreatedAt()));
             }
         }
+    }
+
+    private JPanel MapillaryImages() {
+        JPanel jpIMapillary = new JPanel(new BorderLayout());
+        lbMapillary = new JLabel();
+        lbLinkMapillary = new JLabel(ImageProvider.get("dialogs", "mapillary.png"));
+        lbLinkOSMcamp = new JLabel(ImageProvider.get("dialogs", "openstreetcam.png"));
+        lbLinkMapillary.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        lbLinkOSMcamp.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        JPanel jpIMapillaryOptions = new JPanel(new GridLayout(1, 2, 5, 5));
+        jpIMapillaryOptions.add(lbLinkMapillary);
+        jpIMapillaryOptions.add(lbLinkOSMcamp);
+        //add
+        jpIMapillary.add(lbMapillary, BorderLayout.LINE_START);
+        jpIMapillary.add(jpIMapillaryOptions, BorderLayout.LINE_END);
+        //id obj actions 
+        lbLinkMapillary.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                OSMObjInfoActions.openinBrowserMapillary(lbMapillary.getText());
+            }
+        });
+        lbLinkOSMcamp.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                OSMObjInfoActions.openinBrowserOpenstreetcam(lbMapillary.getText());
+            }
+        });
+        return jpIMapillary;
     }
 }

@@ -3,3 +3,5 @@
 nbproject/
 build/
 *.class
+.DS_Store
+images/.DS_Store
