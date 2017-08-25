@@ -94,11 +94,26 @@ public class OSMObjInfoActions {
     }
 
     public static void openinBrowserIdobjOsmDeepHistory(String typeObj, String idobj) {
-        if (typeObj != null && !idobj.isEmpty() ) {
+        if (typeObj != null && !idobj.isEmpty()) {
             String url = "http://osmlab.github.io/osm-deep-history/#/" + typeObj + "/" + idobj;
             new Notification(tr("Open in browser " + url)).setIcon(JOptionPane.INFORMATION_MESSAGE).setDuration(Notification.TIME_SHORT).show();
             OpenBrowser.displayUrl(url);
         }
+    }
+
+    public static void openinBrowserMapillary(String coords) {
+        String[] arrCoords = coords.split(",");
+        String url = "https://www.mapillary.com/app/?lat=" + arrCoords[0] + "&lng=" + arrCoords[1] + "&z=20&focus=map&dateFrom=2017-01-01";
+        new Notification(tr("Open in browser " + url)).setIcon(JOptionPane.INFORMATION_MESSAGE).setDuration(Notification.TIME_SHORT).show();
+        OpenBrowser.displayUrl(url);
+
+    }
+
+    public static void openinBrowserOpenstreetcam(String coords) {
+        String[] arrCoords = coords.split(",");
+        String url = "http://openstreetcam.org/map/@" + arrCoords[0] + "," + arrCoords[1] + ",18z";
+        new Notification(tr("Open in browser " + url)).setIcon(JOptionPane.INFORMATION_MESSAGE).setDuration(Notification.TIME_SHORT).show();
+        OpenBrowser.displayUrl(url);
     }
 
 }
