@@ -2,7 +2,6 @@ package org.openstreetmap.josm.plugins.osmobjinfo;
 
 import java.util.HashSet;
 import java.util.Set;
-import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.actions.AutoScaleAction;
 import org.openstreetmap.josm.data.osm.OsmPrimitive;
 import org.openstreetmap.josm.gui.layer.OsmDataLayer;

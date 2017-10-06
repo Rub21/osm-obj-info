@@ -1,37 +1,29 @@
 package org.openstreetmap.josm.plugins.osmobjinfo;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Cursor;
-
-import static org.openstreetmap.josm.gui.MainApplication.getLayerManager;
-import static org.openstreetmap.josm.gui.MainApplication.getMap;
-import static org.openstreetmap.josm.tools.I18n.tr;
-import java.awt.GridLayout;
-import java.awt.PopupMenu;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Collection;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.data.SelectionChangedListener;
-import org.openstreetmap.josm.data.coor.EastNorth;
-import org.openstreetmap.josm.data.osm.DataSet;
-import org.openstreetmap.josm.data.osm.Node;
-import org.openstreetmap.josm.data.osm.OsmPrimitive;
 import org.openstreetmap.josm.data.UserIdentityManager;
+import org.openstreetmap.josm.data.osm.DataSet;
+import org.openstreetmap.josm.data.osm.OsmPrimitive;
 import org.openstreetmap.josm.gui.SideButton;
 import org.openstreetmap.josm.gui.dialogs.ToggleDialog;
 import org.openstreetmap.josm.gui.layer.NoteLayer;
 import org.openstreetmap.josm.gui.util.GuiHelper;
 import org.openstreetmap.josm.tools.ImageProvider;
 import org.openstreetmap.josm.tools.Shortcut;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Collection;
+
+import static org.openstreetmap.josm.gui.MainApplication.getLayerManager;
+import static org.openstreetmap.josm.gui.MainApplication.getMap;
+import static org.openstreetmap.josm.tools.I18n.tr;
 
 /**
  *
