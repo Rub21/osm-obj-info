@@ -3,6 +3,9 @@ package org.openstreetmap.josm.plugins.osmobjinfo;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
+
+import static org.openstreetmap.josm.gui.MainApplication.getLayerManager;
+import static org.openstreetmap.josm.gui.MainApplication.getMap;
 import static org.openstreetmap.josm.tools.I18n.tr;
 import java.awt.GridLayout;
 import java.awt.PopupMenu;
@@ -105,7 +108,7 @@ public class OSMObjInfotDialog extends ToggleDialog {
             }
         });
 
-        Main.map.mapView.addMouseListener(new MouseAdapter() {
+        getMap().mapView.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 getInfoNotes(e);
@@ -331,8 +334,8 @@ public class OSMObjInfotDialog extends ToggleDialog {
     }
 
     public void getInfoNotes(MouseEvent e) {
-        if (!Main.getLayerManager().getLayersOfType(NoteLayer.class).isEmpty()) {
-            NoteLayer noteLayer = Main.getLayerManager().getLayersOfType(NoteLayer.class).get(0);
+        if (!getLayerManager().getLayersOfType(NoteLayer.class).isEmpty()) {
+            NoteLayer noteLayer = getLayerManager().getLayersOfType(NoteLayer.class).get(0);
             noteLayer.mouseClicked(e);
             if (!noteLayer.getNoteData().getNotes().isEmpty() && noteLayer.getNoteData().getSelectedNote() != null) {
                 typeObj = "note";
