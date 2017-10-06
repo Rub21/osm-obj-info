@@ -25,7 +25,7 @@ import org.openstreetmap.josm.data.coor.EastNorth;
 import org.openstreetmap.josm.data.osm.DataSet;
 import org.openstreetmap.josm.data.osm.Node;
 import org.openstreetmap.josm.data.osm.OsmPrimitive;
-import org.openstreetmap.josm.gui.JosmUserIdentityManager;
+import org.openstreetmap.josm.data.UserIdentityManager;
 import org.openstreetmap.josm.gui.SideButton;
 import org.openstreetmap.josm.gui.dialogs.ToggleDialog;
 import org.openstreetmap.josm.gui.layer.NoteLayer;
@@ -300,7 +300,7 @@ public class OSMObjInfotDialog extends ToggleDialog {
                         user = element.getUser().getName();
                         timestamp = new SimpleDateFormat("yyyy/MM/dd hh:mm a").format(element.getTimestamp().getTime());
                     } catch (NullPointerException e) {
-                        user = JosmUserIdentityManager.getInstance().getUserName();
+                        user = UserIdentityManager.getInstance().getUserName();
                     }
                     idObject = String.valueOf(element.getId());
                     version = String.valueOf(element.getVersion());
