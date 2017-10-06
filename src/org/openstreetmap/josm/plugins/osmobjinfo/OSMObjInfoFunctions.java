@@ -2,10 +2,11 @@ package org.openstreetmap.josm.plugins.osmobjinfo;
 
 import java.util.HashSet;
 import java.util.Set;
-import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.actions.AutoScaleAction;
 import org.openstreetmap.josm.data.osm.OsmPrimitive;
 import org.openstreetmap.josm.gui.layer.OsmDataLayer;
+
+import static org.openstreetmap.josm.gui.MainApplication.getLayerManager;
 
 /**
  *
@@ -14,7 +15,7 @@ import org.openstreetmap.josm.gui.layer.OsmDataLayer;
 public class OSMObjInfoFunctions {
 
     public static void selectbyUser(final String user) {
-        OsmDataLayer layer = Main.getLayerManager().getEditLayer();
+        OsmDataLayer layer = getLayerManager().getEditLayer();
         Set<OsmPrimitive> omsobj_list = new HashSet<>();
         for (OsmPrimitive obj : layer.data.allPrimitives()) {
             try {
@@ -29,7 +30,7 @@ public class OSMObjInfoFunctions {
     }
 
     public static void selectbyChangesetId(int changesetId) {
-        OsmDataLayer layer = Main.getLayerManager().getEditLayer();
+        OsmDataLayer layer = getLayerManager().getEditLayer();
         Set<OsmPrimitive> omsobj_list = new HashSet<>();
         for (OsmPrimitive obj : layer.data.allPrimitives()) {
             try {
