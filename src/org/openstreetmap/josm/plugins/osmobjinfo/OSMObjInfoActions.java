@@ -58,7 +58,7 @@ public class OSMObjInfoActions {
     }
 
     public static void openinBrowserChangesetMap(String idChangeset) {
-        String url = "http://osmlab.github.io/changeset-map/#" + idChangeset;
+        String url = "https://osmlab.github.io/changeset-map/#" + idChangeset;
         new Notification(tr("Open in browser " + url)).setIcon(JOptionPane.INFORMATION_MESSAGE).setDuration(Notification.TIME_SHORT).show();
         OpenBrowser.displayUrl(url);
 
@@ -80,7 +80,7 @@ public class OSMObjInfoActions {
     }
 
     public static void openinBrowserIdobjOsmDeepHistory(String typeObj, String idobj) {
-        String url = "http://osmlab.github.io/osm-deep-history/#/" + typeObj + "/" + idobj;
+        String url = "https://osmlab.github.io/osm-deep-history/#/" + typeObj + "/" + idobj;
         new Notification(tr("Open in browser " + url)).setIcon(JOptionPane.INFORMATION_MESSAGE).setDuration(Notification.TIME_SHORT).show();
         OpenBrowser.displayUrl(url);
 
